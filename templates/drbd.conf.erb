@@ -1,0 +1,6 @@
+# File managed by puppet
+
+include "<%= scope.lookupvar('drbd::params::global_config_file') %>";
+include "<%= scope.lookupvar('drbd::params::config_snipplet_path') %>/*.res";
+
+

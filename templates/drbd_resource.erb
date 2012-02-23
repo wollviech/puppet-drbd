@@ -1,0 +1,21 @@
+# File managed by puppet
+
+resource <%= name %> 
+{
+	device <%= device %>;
+
+	on <%= a_host %>
+	{
+		disk		<%= a_disk %>;
+		address		<%= a_ip %>:<%= a_port %>;
+		meta-disk	<%= a_meta_disk %>;
+	}
+
+	on <%= b_host %>
+	{
+		disk		<%= b_disk %>;
+		address		<%= b_ip %>:<%= b_port %>;
+		meta-disk	<%= b_meta_disk %>;
+	}
+}
+

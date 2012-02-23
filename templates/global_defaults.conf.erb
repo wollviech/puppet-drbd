@@ -1,0 +1,50 @@
+# File managed by puppet
+
+# Configures global defaults for drbd
+
+global {
+	usage-count <%= scope.lookupvar('drbd::usage_count') %>;
+}
+
+common {
+	protocol <%= scope.lookupvar('drbd::protocol') %>;
+
+	startup {
+		wfc-timeout <%= scope.lookupvar('drbd::wfc_timeout') %>;
+	}
+
+	syncer {
+		rate <%= scope.lookupvar('drbd::sync_rate') %>;
+	}
+
+	disk {
+	<% if scope.lookupvar('drbd::disable_disk_flush') == "true" %>
+		no-disk-barrier;
+		no-disk-drain;
+		no-disk-flushes;
+		no-md-flushes;
+	<% end %>
+		on-io-error detach;
+	<% if scope.lookupvar('drbd::template_storagebased_fencing') %>
+		fencing resource-only;
+	<% end %>
+	}
+
+	net {
+		after-sb-0pri discard-zero-changes;
+		after-sb-1pri consensus;
+		after-sb-2pri disconnect;
+
+	<% if scope.lookupvar('drbd::enable_peer_authentication') != 'false' -%>
+		cram-hmac-alg <%= scope.lookupvar('drbd::hmac_algorithm') %>;
+		shared-secret <%= scope.lookupvar('drbd::shared_secret') %>;
+	<% end -%>
+
+	}
+	<% if scope.lookupvar('drbd::template_storagebased_fencing') %>
+	handlers {
+		fence-peer "/usr/lib/drbd/crm-fence-peer.sh";
+		after-resync-target "/usr/lib/drbd/crm-unfence-peer.sh";
+	}
+	<% end  %>
+}

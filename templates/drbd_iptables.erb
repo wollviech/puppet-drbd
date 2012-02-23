@@ -1,0 +1,6 @@
+*filter
+# DRBD for resource <%= name %>
+-A SERVICE-Specific-1-INPUT -m state --state NEW -m tcp -p tcp --dport <%= a_port %> -s <%= a_ip %> -j ACCEPT
+-A SERVICE-Specific-1-INPUT -m state --state NEW -m tcp -p tcp --dport <%= b_port %> -s <%= b_ip %> -j ACCEPT
+COMMIT
+

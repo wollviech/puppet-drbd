@@ -20,9 +20,7 @@ common {
 	disk {
 	<% if scope.lookupvar('drbd::disable_disk_flush') == "true" %>
 		no-disk-barrier;
-		no-disk-drain;
 		no-disk-flushes;
-		no-md-flushes;
 	<% end %>
 		on-io-error detach;
 	<% if scope.lookupvar('drbd::template_storagebased_fencing') %>

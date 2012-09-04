@@ -31,6 +31,7 @@
 #	
 # Dependencies:
 #	- define kern_module (if $enable_peer_authentication is true)
+#		(Dependency provided inline as drbd::kernel_module)
 #	- pd::nagios::plugins::check_drbd, if $nagios_integration is true
 #
 # Usage examples:
@@ -58,7 +59,7 @@ class drbd (
 
 	require drbd::params
 
-	if ($enable_peer_authentication != 'false') {
+	if ($enable_peer_authentication) {
 		drbd::kernel_module{"${hmac_algorithm}_generic":
 			ensure => present
 		}
@@ -114,11 +115,11 @@ class drbd (
 		]
 	}
 
-	if ($enable_peer_authentication != 'false') {
-		Kern_module["${hmac_algorithm}_generic"] -> Service[$drbd::params::servicename]
+	if ($enable_peer_authentication) {
+		Drbd::Kernel_module["${hmac_algorithm}_generic"] -> Service[$drbd::params::servicename]
 	}
 
-	if ($nagios_integration != 'false') {
+	if ($nagios_integration) {
 		include pd::nagios::plugins::check_drbd
 	}
 }

@@ -6,6 +6,8 @@
 #	$name:		Name of the kernel module
 #	$ensure:	Either "absent" or "present"
 #
+# Source: http://projects.puppetlabs.com/projects/1/wiki/Kernel_Modules_Patterns
+#
 define drbd::kernel_module ($ensure) {
     $modulesfile = $operatingsystem ? { 
 		/Ubuntu|debian/ => "/etc/modules", 
